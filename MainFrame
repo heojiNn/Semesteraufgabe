@@ -13,18 +13,16 @@ import javax.swing.JLabel;
 @SuppressWarnings("serial")
 public class MainFrame extends JFrame {
 
-	
+
 	MainFrame(String title, int width, int heigth) {
 		super(title);
 		
 		//Fenster-Grundeinstellungen
-		setSize(width, heigth);
 		setDefaultCloseOperation(EXIT_ON_CLOSE);
 		setLayout(new BorderLayout());
-		setLocationRelativeTo(null);
 		setBackground(Color.BLACK);
 		
-		//BorderLayout:Center (Es fehlen: ActionListener (Idee: MyActionListener-Klassen)
+		//BorderLayout:Center
 		GridLayout menuLayout = new GridLayout(4,1,10,10);
 		JPanel menu = new JPanel(menuLayout);
 		menu.setBackground(new Color(148, 148, 184));
@@ -34,9 +32,10 @@ public class MainFrame extends JFrame {
 		JButton startGame = new JButton("Start");
 		startGame.setBackground(new Color(102, 102, 153));
 		startGame.setFont(menuFont);
+		startGame.setPreferredSize(new Dimension(400, 40));
 		menu.add(startGame);
 		
-		JButton choseCategory = new JButton("Category");
+		JButton choseCategory = new JButton("Kategorie");
 		choseCategory.setBackground(new Color(102, 102, 153));
 		choseCategory.setFont(menuFont);
 		menu.add(choseCategory);
@@ -51,6 +50,9 @@ public class MainFrame extends JFrame {
 		exit.setFont(menuFont);
 		exit.addActionListener(new MainFrameActionListener());
 		menu.add(exit);
+		
+		menu.setPreferredSize(new Dimension(width, heigth));
+		menu.setMaximumSize(new Dimension(width, heigth));
 		
 		add(menu, BorderLayout.CENTER);
 		
@@ -71,18 +73,22 @@ public class MainFrame extends JFrame {
 		
 		//BorderLayout:West
 		JPanel west = new JPanel();
+		west.setPreferredSize(new Dimension(width/2, 0));
 		add(west, BorderLayout.WEST);
 		
 		//BorderLayout:East
 		JPanel east = new JPanel();
+		east.setPreferredSize(new Dimension(width/2, 0));
 		add(east, BorderLayout.EAST);
 		
+		pack();
 		setVisible(true);
 	}
-			
+		
 	public static void main(String args[]) {
 		new MainFrame("Informatik-Quiz", 600, 600);
 	}
 		
 }
+
 

@@ -1,0 +1,46 @@
+
+import java.awt.event.ActionEvent;
+import java.awt.event.ActionListener;
+
+import javax.swing.JInternalFrame;
+import javax.swing.JPanel;
+
+public class OptionActionListener implements ActionListener {
+
+	private JInternalFrame in;
+	private JPanel c;
+	
+	public OptionActionListener(JPanel center, JInternalFrame internal) throws IllegalArgumentException {
+		setInternalFrame(internal);
+		c = center;
+	}
+	
+	
+	@Override
+	public void actionPerformed(ActionEvent e) {
+		if (e.getActionCommand().equals("Hauptmenü")) {
+			in.setVisible(false);
+			c.setVisible(true);
+		}
+		
+	}
+	
+	public JInternalFrame getInternalFrame() {
+		return this.in;
+	}
+	
+	public void setInternalFrame(JInternalFrame internal) {
+		if (checkInternalFrame(internal)) {
+		this.in = internal;	
+		}
+	}
+	
+	private boolean checkInternalFrame(JInternalFrame internal) throws IllegalArgumentException {
+		if (internal == null) {
+			throw new IllegalArgumentException("no internal frame");
+		} else {
+			return true;
+		}
+	}
+	
+}

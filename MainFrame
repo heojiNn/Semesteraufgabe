@@ -1,94 +1,164 @@
-package gui;
+
+import javax.swing.*;
+import javax.swing.border.EmptyBorder;
+import javax.swing.plaf.basic.BasicInternalFrameUI;
+
 
 import java.awt.*;
-import javax.swing.*;
-
-
-import javax.swing.JPanel;
-import javax.swing.JFrame;
-import javax.swing.JButton;
-import javax.swing.JLabel;
+import java.awt.event.ActionEvent;
+import java.awt.event.ActionListener;
 
 
 @SuppressWarnings("serial")
-public class MainFrame extends JFrame {
+public class MainFrame extends JFrame implements ActionListener {
 
 
-	MainFrame(String title, int width, int heigth) {
+	private int width;
+	private int height;
+	JPanel mainMenu;
+	JInternalFrame optionMenu;
+	
+	/**
+	 * 
+	 * @param title   
+	 * @param newWidth
+	 * @param newHeight
+	 * 
+	 * 				title:=framename
+	 * 
+	 *              newWidth and newHeight describe the resolution of the frame:
+	 *              the background and (preferred) size of JFrame, JPanel with BoxLayout and
+	 *              buttons of each are depending on it
+	 */
+	
+	MainFrame(String title, int newWidth, int newHeight) {
 		super(title);
 		
-		//Fenster-Grundeinstellungen
+		width = newWidth;
+		height = newHeight;
+		
+		//setLayout(new BorderLayout());
 		setDefaultCloseOperation(EXIT_ON_CLOSE);
-		setLayout(new BorderLayout());
-		setBackground(Color.BLACK);
 		
-		//BorderLayout:Center
-		GridLayout menuLayout = new GridLayout(4,1,10,10);
-		JPanel menu = new JPanel(menuLayout);
-		menu.setBackground(new Color(148, 148, 184));
+		//Fullscreen-Commands
+		//setExtendedState(MAXIMIZED_BOTH); 
+		//setUndecorated(true);
 		
+		
+		
+		//Background of the MainFrame ( beim bild müssen wir beachten, dass jeder Benutzer es sehen muss (Pfad) und dass es möglichst keiner Lizenz unterliegt ... )
+		JLabel contentPane = new JLabel();
+		contentPane.setIcon(new ImageIcon("C:\\Users\\Phili\\OneDrive\\Documents\\Informatik-Bachelor\\2.Semester\\Informatik 2\\Semesteraufgabe\\Bilder\\maxresdefault.jpg"));
+		contentPane.setLayout(new BorderLayout());
+		contentPane.setSize(new Dimension(width, height));
+		setContentPane(contentPane);
+		
+		//Adding JPanel to MainFrame for the MainMenu
+		mainMenu = new JPanel();
 		Font menuFont = new Font("Serif", Font.BOLD, 25);
-		
+		BoxLayout boxlayout = new BoxLayout(mainMenu, BoxLayout.Y_AXIS);
+		mainMenu.setLayout(boxlayout);
+		mainMenu.setBorder(new EmptyBorder(new Insets(height/5, width/4, height/5, width/4)));
+	
+		//Creating Buttons
 		JButton startGame = new JButton("Start");
-		startGame.setBackground(new Color(102, 102, 153));
 		startGame.setFont(menuFont);
-		startGame.setPreferredSize(new Dimension(400, 40));
-		menu.add(startGame);
+		startGame.setSize(width/5, height/10);
+		startGame.setAlignmentX(Component.CENTER_ALIGNMENT);
 		
-		JButton choseCategory = new JButton("Kategorie");
-		choseCategory.setBackground(new Color(102, 102, 153));
-		choseCategory.setFont(menuFont);
-		menu.add(choseCategory);
-		
-		JButton choseGameMode = new JButton("Game-Mode");
-		choseGameMode.setBackground(new Color(102, 102, 153));
-		choseGameMode.setFont(menuFont);
-		menu.add(choseGameMode);
+		JButton help = new JButton("Optionen");
+		help.setFont(menuFont);
+		help.setSize(width/5, height/10);
+		help.addActionListener(this);
+		help.setAlignmentX(Component.CENTER_ALIGNMENT);
 		
 		JButton exit = new JButton("Exit");
-		exit.setBackground(new Color(102, 102, 153));
 		exit.setFont(menuFont);
-		exit.addActionListener(new MainFrameActionListener());
-		menu.add(exit);
+		exit.setSize(width/5, height/10);
+		exit.addActionListener(this);
+		exit.setAlignmentX(Component.CENTER_ALIGNMENT);
 		
-		menu.setPreferredSize(new Dimension(width, heigth));
-		menu.setMaximumSize(new Dimension(width, heigth));
+		//adding Buttons
+		mainMenu.add(startGame);
+		mainMenu.add(Box.createRigidArea(new Dimension(0, 80)));
+		mainMenu.add(help);
+		mainMenu.add(Box.createRigidArea(new Dimension(0, 80)));
+		mainMenu.add(exit);
 		
-		add(menu, BorderLayout.CENTER);
 		
-		//BorderLayout:North
-		JPanel north = new JPanel();
-		JLabel northLabel = new JLabel("Willkommen zum Info-Quiz!");
-		JTextField northText = new JTextField("Willkommen zum Info-Quiz!");
-		northText.setEditable(false);
-		north.add(northLabel);
-		add(north, BorderLayout.NORTH);
+		add(mainMenu, BorderLayout.CENTER);
+		mainMenu.setOpaque(false);
 		
-		//BorderLayout:South
-		JPanel south = new JPanel();
-		ImageIcon icon = new ImageIcon("C:\\Users\\Phili\\OneDrive\\Documents\\Informatik-Bachelor\\2.Semester\\Informatik 2\\Semesteraufgabe\\unilogo.jpg");
-		JLabel southLabel = new JLabel(icon);
-		south.add(southLabel);
-		add(south, BorderLayout.SOUTH);
-		
-		//BorderLayout:West
-		JPanel west = new JPanel();
-		west.setPreferredSize(new Dimension(width/2, 0));
-		add(west, BorderLayout.WEST);
-		
-		//BorderLayout:East
-		JPanel east = new JPanel();
-		east.setPreferredSize(new Dimension(width/2, 0));
-		add(east, BorderLayout.EAST);
-		
+		setResizable(false);
+		setPreferredSize(new Dimension(width, height));
 		pack();
 		setVisible(true);
 	}
 		
+	
+	
 	public static void main(String args[]) {
-		new MainFrame("Informatik-Quiz", 600, 600);
+		/**
+		 * add resolution here:
+		 */
+		new MainFrame("Informatik-Quiz", 1280, 720);
 	}
-		
-}
 
+	@Override
+	public void actionPerformed(ActionEvent e) {
+		
+		if (e.getActionCommand().equals(("Exit"))) {
+			System.exit(0);
+		} 
+		
+		if (e.getActionCommand().equals("Optionen")) {
+			
+			//hiding Panel
+			mainMenu.setVisible(false);
+			
+			//creating JInternalFrame for OptionMenu
+			optionMenu = new JInternalFrame();
+			
+			//hiding InternalFrame's titlebar and borders
+			BasicInternalFrameUI titlebar = (BasicInternalFrameUI) optionMenu.getUI();
+			titlebar.setNorthPane(null);
+			optionMenu.setBorder(null);
+			
+			//background
+			JLabel contentPane = new JLabel();
+			contentPane.setIcon(new ImageIcon("C:\\Users\\Phili\\OneDrive\\Documents\\Informatik-Bachelor\\2.Semester\\Informatik 2\\Semesteraufgabe\\Bilder\\maxresdefault.jpg"));
+			contentPane.setLayout(new BorderLayout());
+			contentPane.setSize(new Dimension(width, height));
+			optionMenu.setContentPane(contentPane);
+			
+			//creating and adding buttons
+			JPanel optionPanel = new JPanel();
+			BoxLayout boxlayout = new BoxLayout(optionPanel, BoxLayout.Y_AXIS);
+			optionPanel.setLayout(boxlayout);
+			optionPanel.setBorder(new EmptyBorder(new Insets(height/5, width/4, height/5, width/4)));
+			
+			JButton videosettings = new JButton("Videosettings");
+			videosettings.setFont(new Font("Serif", Font.BOLD, 25));
+			videosettings.setSize(width/5, height/10);
+			videosettings.setAlignmentX(Component.CENTER_ALIGNMENT);
+			
+			JButton returnButton = new JButton("Hauptmenü");
+			returnButton.setFont(new Font("Serif", Font.BOLD, 25));
+			returnButton.setSize(width/5, height/10);
+			returnButton.setAlignmentX(Component.CENTER_ALIGNMENT);
+			returnButton.addActionListener(new OptionActionListener(mainMenu, optionMenu));
+			
+			optionPanel.add(videosettings);
+			optionPanel.add(Box.createRigidArea(new Dimension(0, 80)));
+			optionPanel.add(returnButton);
+			
+			//adding JInternalFrame to MainFrame
+			optionPanel.setOpaque(false);
+			optionMenu.add(optionPanel);
+			add(optionMenu);
+			optionMenu.setVisible(true);
+		} 
+		
+	}
+}
 

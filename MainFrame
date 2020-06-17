@@ -46,7 +46,9 @@ public class MainFrame extends JFrame implements ActionListener {
 		
 		
 		
+		
 		//Background of the MainFrame ( beim bild müssen wir beachten, dass jeder Benutzer es sehen muss (Pfad) und dass es möglichst keiner Lizenz unterliegt ... )
+		//Ihr könnt ja mal ein Bild einfügen um zu sehen wie das ausschaut (bei ImageIcon halt)
 		JLabel contentPane = new JLabel();
 		contentPane.setIcon(new ImageIcon("C:\\Users\\Phili\\OneDrive\\Documents\\Informatik-Bachelor\\2.Semester\\Informatik 2\\Semesteraufgabe\\Bilder\\maxresdefault.jpg"));
 		contentPane.setLayout(new BorderLayout());

@@ -1,29 +1,86 @@
 
+import java.awt.BorderLayout;
+import java.awt.Dimension;
+import java.awt.Insets;
 import java.awt.event.ActionEvent;
 import java.awt.event.ActionListener;
 
+import javax.swing.JButton;
+import javax.swing.BoxLayout;
+import javax.swing.ImageIcon;
 import javax.swing.JInternalFrame;
+import javax.swing.JLabel;
 import javax.swing.JPanel;
+import javax.swing.JFrame;
+import javax.swing.border.EmptyBorder;
+import javax.swing.plaf.basic.BasicInternalFrameUI;
 
 public class OptionActionListener implements ActionListener {
 
+	private JFrame frame;
 	private JInternalFrame in;
 	private JPanel c;
+	private int width;
+	private int height;
 	
-	public OptionActionListener(JPanel center, JInternalFrame internal) throws IllegalArgumentException {
+	
+
+	public OptionActionListener(JFrame mainFrame, JPanel center, JInternalFrame internal, int width2, int height2) throws IllegalArgumentException {
 		setInternalFrame(internal);
 		c = center;
+		width = width2;
+		height = height2;
+		frame = mainFrame;
+	}
+	
+	public OptionActionListener(JPanel center, JInternalFrame internal, int width2, int height2) throws IllegalArgumentException {
+		setInternalFrame(internal);
+		c = center;
+		width = width2;
+		height = height2;
 	}
 	
 	
 	@Override
 	public void actionPerformed(ActionEvent e) {
+		
 		if (e.getActionCommand().equals("Hauptmenü")) {
-			in.setVisible(false);
 			c.setVisible(true);
+			frame.remove(in);
+		}
+		
+		if (e.getActionCommand().equals("Videosettings")) {
+			
+			
+			JInternalFrame videoSettingsMenu = new JInternalFrame();
+			BasicInternalFrameUI titlebar = (BasicInternalFrameUI) videoSettingsMenu.getUI();
+			titlebar.setNorthPane(null);
+			videoSettingsMenu.setBorder(null);
+			
+			JLabel contentPane = new JLabel();
+			contentPane.setIcon(new ImageIcon("C:\\Users\\Phili\\OneDrive\\Documents\\Informatik-Bachelor\\2.Semester\\Informatik 2\\Semesteraufgabe\\Bilder\\maxresdefault.jpg"));
+			contentPane.setLayout(new BorderLayout());
+			contentPane.setSize(new Dimension(width, height));
+			videoSettingsMenu.setContentPane(contentPane);
+			
+			JPanel optionPanel = new JPanel();
+			BoxLayout boxlayout = new BoxLayout(optionPanel, BoxLayout.Y_AXIS);
+			optionPanel.setLayout(boxlayout);
+			optionPanel.setBorder(new EmptyBorder(new Insets(height/5, width/4, height/5, width/4)));
+			optionPanel.setOpaque(false);
+			
+			
+			
+			videoSettingsMenu.add(optionPanel);
+			
+			
+			videoSettingsMenu.setVisible(true);
+			in.add(videoSettingsMenu);
 		}
 		
 	}
+	
+
 	
 	public JInternalFrame getInternalFrame() {
 		return this.in;
@@ -31,7 +88,7 @@ public class OptionActionListener implements ActionListener {
 	
 	public void setInternalFrame(JInternalFrame internal) {
 		if (checkInternalFrame(internal)) {
-		this.in = internal;	
+			in = internal;	
 		}
 	}
 	
@@ -42,5 +99,5 @@ public class OptionActionListener implements ActionListener {
 			return true;
 		}
 	}
-	
 }
+
